@@ -1,0 +1,182 @@
+
+Week 7 Assignment
+Description
+
+
+Create a CSS Animation:
+Define keyframes using @keyframes.
+Apply the animation to an HTML element using the animation property (or its sub-properties like animation-name, animation-duration, animation-timing-function, etc.).
+Choose an animation effect (e.g., fade-in, slide-in, rotation, color change).
+Store Data in localStorage:
+Decide what simple piece of data you want to store (e.g., a user preference like a theme choice, a counter value, a simple message).
+Use localStorage.setItem(key, value) to save the data. Remember value needs to be a string (use JSON.stringify() for objects/arrays).
+Use localStorage.getItem(key) to retrieve the data. Remember to use JSON.parse() if you stored an object/array.
+Optionally, use localStorage.removeItem(key) or localStorage.clear().
+Apply JavaScript to Trigger Animations:
+Use JavaScript to select the HTML element(s) involved in the animation (e.g., using document.querySelector() or document.getElementById()).
+Use JavaScript to dynamically change CSS properties that are part of a transition (e.g., element.style.opacity = '1', element.style.transform = 'translateX(100px)').
+Alternatively, use JavaScript to add/remove CSS classes that define transitions or animations (e.g., element.classList.add('animated-class')).
+Trigger these changes based on user interaction (e.g., button click, hover) or other events.
+Example Structure:
+
+1. HTML (index.html):
+Create a CSS Animation:
+Define keyframes using @keyframes.
+Apply the animation to an HTML element using the animation property (or its sub-properties like animation-name, animation-duration, animation-timing-function, etc.).
+Choose an animation effect (e.g., fade-in, slide-in, rotation, color change).
+Store Data in localStorage:
+Decide what simple piece of data you want to store (e.g., a user preference like a theme choice, a counter value, a simple message).
+Use localStorage.setItem(key, value) to save the data. Remember value needs to be a string (use JSON.stringify() for objects/arrays).
+Use localStorage.getItem(key) to retrieve the data. Remember to use JSON.parse() if you stored an object/array.
+Optionally, use localStorage.removeItem(key) or localStorage.clear().
+Apply JavaScript to Trigger Animations:
+Use JavaScript to select the HTML element(s) involved in the animation (e.g., using document.querySelector() or document.getElementById()).
+Use JavaScript to dynamically change CSS properties that are part of a transition (e.g., element.style.opacity = '1', element.style.transform = 'translateX(100px)').
+Alternatively, use JavaScript to add/remove CSS classes that define transitions or animations (e.g., element.classList.add('animated-class')).
+Trigger these changes based on user interaction (e.g., button click, hover) or other events.
+Example Structure:
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    transition: background-color 0.5s ease; /* Transition for body background */
+}
+
+.light-theme {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.dark-theme {
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Box styling */
+.box {
+    width: 100px;
+    height: 100px;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* CSS Animation Keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Apply CSS Animation */
+#animated-box {
+    background-color: #4CAF50;
+    opacity: 0; /* Start invisible */
+    animation: fadeIn 2s ease-in-out forwards; /* Apply animation */
+}
+
+/* Transition styling */
+.transition-box {
+    background-color: #2196F3;
+    transform: translateX(0); /* Start position */
+    transition: transform 0.5s ease, background-color 0.5s ease; /* Define transition properties */
+}
+
+/* Button styling */
+#theme-toggle {
+    display: block;
+    margin: 30px auto;
+    padding: 10px 20px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Button hover transition */
+}
+
+#theme-toggle:hover {
+    background-color: #e68a00;
+}
+
+/* Theme-specific box colors */
+.dark-theme .box {
+    background-color: #9C27B0; /* Purple for dark theme */
+}
+
+.dark-theme .transition-box {
+    background-color: #00BCD4; /* Cyan for dark theme */
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const animatedBox = document.getElementById('animated-box');
+    const transitionBox = document.getElementById('transition-box');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeStatus = document.getElementById('theme-status');
+
+    // 1. CSS Animation Interaction (using hover already defined in CSS)
+    animatedBox.addEventListener('mouseover', function() {
+        // You could add more complex JS-triggered animation logic here if needed
+        console.log('Mouse over animated box!');
+    });
+
+    // 2. JavaScript Triggered Transition
+    transitionBox.addEventListener('click', function() {
+        // Toggle the transform property to move the box
+        if (transitionBox.style.transform === 'translateX(100px)') {
+            transitionBox.style.transform = 'translateX(0)';
+            transitionBox.style.backgroundColor = '#2196F3'; // Reset color
+        } else {
+            transitionBox.style.transform = 'translateX(100px)';
+            transitionBox.style.backgroundColor = '#F44336'; // Change color on move
+        }
+    });
+
+    // 3. LocalStorage and JS Triggered Animation/State Change
+    // Load saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.body.className = savedTheme + '-theme'; // Apply saved theme class
+        themeStatus.textContent = savedTheme; // Update status display
+    } else {
+        themeStatus.textContent = 'None (Default: Light)'; // Default status
+    }
+
+    // Theme toggle button functionality
+    themeToggleBtn.addEventListener('click', function() {
+        const currentTheme = document.body.className;
+
+        // Toggle theme
+        if (currentTheme === 'light-theme') {
+            document.body.className = 'dark-theme';
+            const newTheme = 'dark';
+            localStorage.setItem('theme', newTheme); // Save to localStorage
+            themeStatus.textContent = newTheme;
+        } else {
+            document.body.className = 'light-theme';
+            const newTheme = 'light';
+            localStorage.setItem('theme', newTheme); // Save to localStorage
+            themeStatus.textContent = newTheme;
+        }
+    });
+});
